@@ -2,6 +2,7 @@ import express , {Request , Response} from "express";
 import cors from 'cors';
 import dotenv from "dotenv";
 import connectDB from "./db";
+import myUserRoute from './routes/myUser.routes'
 
 dotenv.config({
   path : './.env'
@@ -10,6 +11,8 @@ dotenv.config({
 const app = express();
 app.use(express.json())
 app.use(cors())
+
+app.use("/api/my/user" , myUserRoute)
 
 connectDB()
 .then( ()=>{
@@ -26,6 +29,3 @@ connectDB()
    console.log("Mongodb is connection failed " , err);
    })
 
-app.get("/users" , async (req:Request ,res:Response)=>{
-  res.json({message:"hello world"})
-})
