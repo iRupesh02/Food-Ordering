@@ -12,6 +12,10 @@ const userSchema = new Schema({
     name:{
         type:String
     },
+    phone :{
+        type:String,
+        
+    },
     addressLine1:{
         type:String
     },
