@@ -1,6 +1,7 @@
+import { User } from '@/types';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios'
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { toast } from 'sonner';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -62,7 +63,7 @@ export const useUpdateMyUser =  () =>{
       if(!response ){
           throw new Error("failed to update user")
       }
-     return response.data.message;
+     return response.data;
    }
 
    const {mutateAsync : updateUser , isLoading , isSuccess , isError ,error,reset} = useMutation(updateCurrentUser)
@@ -80,3 +81,30 @@ export const useUpdateMyUser =  () =>{
    }
 }
 
+
+export const useGetMyUser = () =>{
+  const {getAccessTokenSilently} = useAuth0();
+  const getMyUserRequest = async ():Promise<User> => {
+    const accessToken = await getAccessTokenSilently()
+    const response = await axios.get(`${API_BASE_URL}/api/my/user` , 
+      {
+        headers : {
+          Authorization : `Bearer ${accessToken}`,
+          "Content-Type":"application/json",
+        }
+      }
+    )
+    if(!response){
+      throw new Error("failed to fetch user");
+    }
+    return response.data
+  }
+
+  const {data : currentUser , isLoading , error} = useQuery("fetchCurrentUser" , getMyUserRequest)
+
+  if(error){
+    toast.error(error.toString());
+  }
+
+  return {currentUser , isLoading}
+}

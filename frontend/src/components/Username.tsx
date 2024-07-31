@@ -19,6 +19,11 @@ const Username = () => {
         {user?.nickname}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+      <DropdownMenuItem>
+          <Link to="/manage-restaurant" className="font-bold text-red-500">
+            Manage Restaurant
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>
           <Link to="/user-profile" className="font-bold text-red-500">
             User profile

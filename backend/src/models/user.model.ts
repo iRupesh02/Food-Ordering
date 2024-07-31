@@ -1,6 +1,7 @@
 import mongoose , {Schema} from 'mongoose';
 
 const userSchema = new Schema({
+    // _id : ObjectId,
     auth0Id:{
         type:String,
         required: true

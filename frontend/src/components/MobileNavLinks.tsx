@@ -10,6 +10,8 @@ export const MobileNavLinks = () => {
     <div >
         <Link to="/user-profile" className="flex bg-white items-center font-bold hover:text-red-500">User Profile</Link>
         <Separator/>
+        <Link to="/manage-restaurant" className="flex bg-white items-center font-bold hover:text-red-500">Manage Restaurant</Link>
+        <Separator/>
         <Button onClick={()=>logout()}className="flex items-center px-3 font-bold hover:bg-red-500">
             Log Out
         </Button>
