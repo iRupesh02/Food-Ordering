@@ -5,6 +5,7 @@ import connectDB from "./db";
 import myUserRoute from './routes/myUser.routes'
 import {v2 as cloudinary} from 'cloudinary'
 import myRestaurantRoute from './routes/myRestaurant.routes'
+import restaurantRoute from './routes/restaurant.routes'
 dotenv.config({
   path : './.env'
 })
@@ -26,7 +27,7 @@ app.get("/health" , async (req:Request , res: Response) => {
 
 app.use("/api/my/user" , myUserRoute)
 app.use("/api/my/restaurant" , myRestaurantRoute);
-
+app.use("/api/restaurant" , restaurantRoute)
 connectDB()
 .then( ()=>{
   app.on( "error" , (error)=>{
