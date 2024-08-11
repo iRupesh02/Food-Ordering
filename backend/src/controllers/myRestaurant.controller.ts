@@ -2,16 +2,15 @@ import { Request, Response } from "express";
 import Restaurant from "../models/restaurant.model";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
+import Order from '../models/order.model'
 
 const uploadImage = async (file: Express.Multer.File) => {
-    
-   
-      const image = file;
-      const base64Image = Buffer.from(image.buffer).toString("base64");
-      const dataURI = `data:${image.mimetype};base64,${base64Image}`;
-  
-      const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
-      return uploadResponse.url;
+  const image = file;
+  const base64Image = Buffer.from(image.buffer).toString("base64");
+  const dataURI = `data:${image.mimetype};base64,${base64Image}`;
+
+  const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+  return uploadResponse.url;
 };
 const createMyRestaurant = async (req: Request, res: Response) => {
   try {
@@ -24,7 +23,7 @@ const createMyRestaurant = async (req: Request, res: Response) => {
 
     const imageUrl = await uploadImage(req.file as Express.Multer.File);
     const restaurant = new Restaurant(req.body);
-    restaurant.imageUrl = imageUrl
+    restaurant.imageUrl = imageUrl;
     restaurant.user = new mongoose.Types.ObjectId(req.userId);
     restaurant.lastUpdated = new Date();
     await restaurant.save();
@@ -71,12 +70,82 @@ const updateMyRestaurant = async (req: Request, res: Response) => {
     res.status(201).send(restaurant);
   } catch (error) {
     console.log("error", error);
-    res
-      .status(500)
-      .json({
-        message: "Something went wrong during updating the Myrestaurant ",
-      });
+    res.status(500).json({
+      message: "Something went wrong during updating the Myrestaurant ",
+    });
   }
 };
 
-export { createMyRestaurant, getMyRestaurant, updateMyRestaurant };
+const getMyRestaurantOrder = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+    if (!restaurant) {
+      return res.status(404).json({ message: "Restaurant not found" });
+    }
+    const order = await Order.find({ restaurant: restaurant._id })
+      .populate("restaurant")
+      .populate("user");
+       res.json(order);
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+};
+
+// const updateOrderStatus = async(req: Request , res: Response) => {
+//   try {
+//     const {orderId} = req.params;
+//     const {status} = req.body;
+//     const order = await Order.findById(orderId);
+//     if(!order){
+//       return res.status(402).json({message:"order not found"})
+//     }
+//     const restaurant = await Restaurant.findById(order.restaurant)
+   
+
+//     if(restaurant?.user?._id.toString() !== req.userId){
+//       return res.status(403).send()
+//     }
+//     order.status = status;
+//     await order.save();
+
+//     res.status(200).json(order);
+//   } catch (error) {
+//     console.log("error" , error);
+//     res.status(500).json({message:"unable to update the status of orders"})
+    
+//   }
+// } 
+const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "order not found" });
+    }
+
+    const restaurant = await Restaurant.findById(order.restaurant);
+
+    if (restaurant?.user?._id.toString() !== req.userId) {
+      return res.status(401).send();
+    }
+
+    order.status = status;
+    await order.save();
+
+    res.status(200).json(order);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "unable to update order status" });
+  }
+};
+
+export {
+  createMyRestaurant,
+  getMyRestaurant,
+  updateMyRestaurant,
+  getMyRestaurantOrder,
+  updateOrderStatus
+};
