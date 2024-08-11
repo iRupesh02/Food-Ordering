@@ -142,7 +142,7 @@ export const useUpdateMyRestaurantOrder = () => {
   ) => {
     const accessToken = await getAccessTokenSilently();
    
-    const response = await axios.put(
+    const response = await axios.patch(
       `${API_BASE_URL}/api/my/restaurant/order/${updateStatusOrderRequest.orderId}/status`,
       JSON.stringify({status: updateStatusOrderRequest.status }),
       {

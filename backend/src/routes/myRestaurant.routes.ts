@@ -19,6 +19,6 @@ router.route('/').get(jwtCheck , jwtParse , getMyRestaurant)
 router.route('/').put(upload.single('imageFile'),validateMyRestaurantRequest ,jwtCheck , jwtParse,updateMyRestaurant)
 
 router.route('/order').get(jwtCheck , jwtParse , getMyRestaurantOrder)
-router.route('/order:orderId/status').put( jwtCheck , jwtParse , updateOrderStatus)
+router.route('/order/:orderId/status').patch( jwtCheck , jwtParse , updateOrderStatus)
 
 export default router 
