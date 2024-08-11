@@ -1,5 +1,6 @@
 import {
   Sheet,
+ 
   SheetContent,
   SheetDescription,
   SheetTitle,
@@ -20,10 +21,10 @@ const MobileNav = () => {
         <SheetTrigger>
           <Menu className="text-red-500" />
         </SheetTrigger>
-        <SheetContent className="space-y-3">
-          <SheetTitle>
+        <SheetContent className="w-[300px] sm:w-[540px]">
+          <SheetTitle >
             {isAuthenticated ? (
-              <span className="flex items-center font-bold gap-2">
+              <span className="flex items-center font-bold gap-2 justify-center">
                 <CircleUserRound className="text-red-500" />
                 {user?.nickname}
               </span>
@@ -31,9 +32,9 @@ const MobileNav = () => {
               <span>Welcome to BiteBuzz!</span>
             )}
           </SheetTitle>
-          <Separator />
+          <Separator className="mt-2"/>
           <SheetDescription className="flex flex-col gap-6">
-            {isAuthenticated ? (
+         {isAuthenticated ? (
               <MobileNavLinks />
             ) : (
               <Button
@@ -43,6 +44,7 @@ const MobileNav = () => {
                 Log In
               </Button>
             )}
+             
           </SheetDescription>
         </SheetContent>
       </Sheet>

@@ -57,11 +57,11 @@ const UserProfileForm = ({ onSave, isLoading, currentUser ,title="User Profile" 
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSave)}
-        className="space-y-4 bg-gray-50 rounded-lg md:p-10"
+        className="space-y-4 bg-gray-50 rounded-lg md:p-10 p-5"
       >
         <div>
-          <h2 className="text-2xl font-bold"> {title}</h2>
-          <FormDescription>
+          <h2 className="text-2xl font-bold text-center md:text-left"> {title}</h2>
+          <FormDescription className="text-center mb-1 md:text-left">
             View and change your profile information here
           </FormDescription>
           <FormField

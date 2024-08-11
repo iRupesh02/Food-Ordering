@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "./ui/form";
-import { Search } from "lucide-react";
+import { RefreshCcw, Search } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useEffect } from "react";
@@ -47,7 +47,7 @@ const SearchBar = ({ onSubmit, placeHolder, onReset, searchQuery }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={`flex items-center gap-3 justify-between flex-row border-2 rounded-full p-2 ${
+        className={`flex items-center gap-3   justify-between flex-row border-2 rounded-full p-2 ${
           form.formState.errors.searchQuery && "border-red-500"
         }`}
       >
@@ -64,7 +64,7 @@ const SearchBar = ({ onSubmit, placeHolder, onReset, searchQuery }: Props) => {
               <FormControl>
                 <Input
                   {...field}
-                  className="border-none shadow-none md:text-[15px] text-xl  focus-visible:ring-0"
+                  className="border-none shadow-none md:text-[15px] md:text-xl   focus-visible:ring-0"
                   placeholder={placeHolder}
                 />
               </FormControl>
@@ -74,17 +74,31 @@ const SearchBar = ({ onSubmit, placeHolder, onReset, searchQuery }: Props) => {
         {/* {form.formState.isDirty && (
           
         )} */}
+     
         <Button
             onClick={handleReset}
             type="button"
             variant="outline"
-            className="rounded-full"
+            className="rounded-full md:block hidden"
+            
           >
-            Reset
+            Reset 
           </Button>
+          <div  className="hidden md:block">
         <Button type="submit" className="rounded-full bg-red-500">
-          Search
+        Search
         </Button>
+        </div>
+        <div className="md:hidden block">
+        <Button variant={null} type="submit" >
+        <Search
+          strokeWidth={2.5}
+          size={25}
+          className="ml-1 text-red-500 md:hidden"
+        />
+        </Button>
+        </div>
+        
       </form>
     </Form>
   );
