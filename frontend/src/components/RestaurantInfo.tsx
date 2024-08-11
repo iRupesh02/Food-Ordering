@@ -23,11 +23,11 @@ const RestaurantInfo = ({ restaurant }: Props) => {
           {restaurant.city} , {restaurant.country}
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex text-slate-600">
+      <CardContent className="sm:flex md:flex-row grid grid-cols-3 text-slate-600  ">
         {restaurant.cuisines.map((item, index) => (
-          <span className="flex text-slate-600">
+          <span className="flex md:flex-row flex-col text-slate-600">
             <span>{item}</span>{" "}
-            {index < restaurant.cuisines.length - 1 && <Dot />}
+            {index < restaurant.cuisines.length - 1 && <Dot className="sm:block hidden"/>}
           </span>
         ))}
       </CardContent>
